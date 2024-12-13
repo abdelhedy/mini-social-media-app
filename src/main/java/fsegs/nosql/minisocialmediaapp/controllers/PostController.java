@@ -2,6 +2,7 @@ package fsegs.nosql.minisocialmediaapp.controllers;
 
 import fsegs.nosql.minisocialmediaapp.dtos.createInputs.PostCreateInput;
 import fsegs.nosql.minisocialmediaapp.dtos.responseDtos.PostResponseDto;
+import fsegs.nosql.minisocialmediaapp.dtos.updateInputs.PostUpdateInput;
 import fsegs.nosql.minisocialmediaapp.services.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,12 @@ public class PostController {
     @PostMapping(value = "/create",consumes = {"multipart/form-data"})
     private ResponseEntity<PostResponseDto> addPost(@ModelAttribute PostCreateInput input){
         return new ResponseEntity<>(postService.createPost(input),HttpStatus.CREATED);
+    }
+    @PutMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable String postId,
+            @RequestBody PostUpdateInput updateInput) { // Use the new DTO
+        PostResponseDto updatedPost = postService.updatePost(postId, updateInput);
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
     }
 
 //    @PutMapping("/update/{id}")

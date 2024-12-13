@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,7 +70,7 @@ public class PostMapper {
         if (post.getImagePaths() != null) {
             dto.setImageURLs(
                     post.getImagePaths().stream()
-                            .map(path -> fileBaseUrl + path)
+                            .map(path -> fileBaseUrl + Paths.get(path).getFileName().toString()) // Extract only the file name
                             .collect(Collectors.toList())
             );
         }
@@ -79,7 +78,7 @@ public class PostMapper {
         if (post.getVideoPaths() != null) {
             dto.setVideoURLs(
                     post.getVideoPaths().stream()
-                            .map(path -> fileBaseUrl + path)
+                            .map(path -> fileBaseUrl + Paths.get(path).getFileName().toString())
                             .collect(Collectors.toList())
             );
         }
@@ -117,29 +116,29 @@ public class PostMapper {
             throw new RuntimeException("Failed to save file: " + file.getOriginalFilename(), e);
         }
     }
-    private String readFileAsBase64(String filePath) {
-        try {
-            Path path = Paths.get(UPLOAD_DIR).resolve(filePath).normalize();
-            byte[] fileBytes = Files.readAllBytes(path);
-            return Base64.getEncoder().encodeToString(fileBytes);
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read file: " + filePath, e);
-        }
-    }
-    private String processVideoFile(String filePath) {
-        Path path = Paths.get(UPLOAD_DIR).resolve(filePath).normalize();
-        try {
-            long fileSize = Files.size(path);
-            if (fileSize < 5 * 1024 * 1024) { // If the video is less than 5MB, return base64
-                byte[] fileBytes = Files.readAllBytes(path);
-                return Base64.getEncoder().encodeToString(fileBytes);
-            } else { // For large videos, return URL
-                return "/videos/" + filePath;
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read video file: " + filePath, e);
-        }
-    }
+//    private String readFileAsBase64(String filePath) {
+//        try {
+//            Path path = Paths.get(UPLOAD_DIR).resolve(filePath).normalize();
+//            byte[] fileBytes = Files.readAllBytes(path);
+//            return Base64.getEncoder().encodeToString(fileBytes);
+//        } catch (IOException e) {
+//            throw new RuntimeException("Failed to read file: " + filePath, e);
+//        }
+//    }
+//    private String processVideoFile(String filePath) {
+//        Path path = Paths.get(UPLOAD_DIR).resolve(filePath).normalize();
+//        try {
+//            long fileSize = Files.size(path);
+//            if (fileSize < 5 * 1024 * 1024) { // If the video is less than 5MB, return base64
+//                byte[] fileBytes = Files.readAllBytes(path);
+//                return Base64.getEncoder().encodeToString(fileBytes);
+//            } else { // For large videos, return URL
+//                return "/videos/" + filePath;
+//            }
+//        } catch (IOException e) {
+//            throw new RuntimeException("Failed to read video file: " + filePath, e);
+//        }
+//    }
 
 
 }
