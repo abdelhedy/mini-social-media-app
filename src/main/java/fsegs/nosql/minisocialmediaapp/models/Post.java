@@ -1,12 +1,10 @@
 package fsegs.nosql.minisocialmediaapp.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection = "posts")
@@ -14,11 +12,16 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Post {
     @Id
-    private Long id;
+    private String id;
     private String authorId; // Reference to the User ID
     private String content;
-    private List<String> media; // List of media URLs
+    private List<String> imagePaths;
+    private List<String> videoPaths;
     private List<String> likes; // List of user IDs who liked the post
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
 }
