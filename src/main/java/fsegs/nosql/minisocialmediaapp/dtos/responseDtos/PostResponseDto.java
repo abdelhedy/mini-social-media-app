@@ -8,7 +8,8 @@ import java.util.List;
 @Data
 public class PostResponseDto {
     private String id;
-    private String authorId;
+    private String authorNom;
+    private String authorPrenom;
     private String content;
     private List<String> imageURLs;
     private List<String> videoURLs;

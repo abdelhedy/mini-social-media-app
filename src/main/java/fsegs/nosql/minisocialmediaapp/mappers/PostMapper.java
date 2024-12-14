@@ -3,6 +3,8 @@ package fsegs.nosql.minisocialmediaapp.mappers;
 import fsegs.nosql.minisocialmediaapp.dtos.createInputs.PostCreateInput;
 import fsegs.nosql.minisocialmediaapp.dtos.responseDtos.PostResponseDto;
 import fsegs.nosql.minisocialmediaapp.models.Post;
+import fsegs.nosql.minisocialmediaapp.models.User;
+import fsegs.nosql.minisocialmediaapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +22,11 @@ import java.util.stream.Collectors;
 public class PostMapper {
     @Value("${file.upload.dir}")
     private static final String UPLOAD_DIR = "E:/postify_files";
+    private final UserRepository userRepository;
+
+    public PostMapper(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public Post toEntity(PostCreateInput input) {
         Post post = new Post();
@@ -61,7 +68,7 @@ public class PostMapper {
 
         PostResponseDto dto = new PostResponseDto();
         dto.setId(post.getId());
-        dto.setAuthorId(post.getAuthorId());
+//        dto.setAuthorId(post.getAuthorId());
         dto.setContent(post.getContent());
 //        dto.setImagePaths(post.getImagePaths());
 //        dto.setVideoPaths(post.getVideoPaths());
@@ -82,6 +89,19 @@ public class PostMapper {
                             .collect(Collectors.toList())
             );
         }
+        String authorId = post.getAuthorId().replace("\"", "");
+        User user = userRepository.findById(authorId)
+                .orElseThrow(() -> {
+                    System.err.println("User not found with ID: " + post.getAuthorId());
+                    return new RuntimeException("User not found with ID: " + post.getAuthorId());
+                });
+
+        // Debug prints
+//        System.out.println("Found User: " + user);
+//        System.out.println("User Nom: " + user.getNom());
+//        System.out.println("User Prenom: " + user.getPrenom());
+        dto.setAuthorNom(user.getNom());
+        dto.setAuthorPrenom(user.getPrenom());
         dto.setLikes(post.getLikes());
         return dto;
     }
