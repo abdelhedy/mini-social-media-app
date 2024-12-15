@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "posts")
@@ -20,7 +21,7 @@ public class Post {
     private String content;
     private List<String> imagePaths;
     private List<String> videoPaths;
-    private List<String> likes; // List of user IDs who liked the post
+    private List<String> likes= new ArrayList<>(); // List of user IDs who liked the post
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

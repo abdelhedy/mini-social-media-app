@@ -136,29 +136,5 @@ public class PostMapper {
             throw new RuntimeException("Failed to save file: " + file.getOriginalFilename(), e);
         }
     }
-//    private String readFileAsBase64(String filePath) {
-//        try {
-//            Path path = Paths.get(UPLOAD_DIR).resolve(filePath).normalize();
-//            byte[] fileBytes = Files.readAllBytes(path);
-//            return Base64.getEncoder().encodeToString(fileBytes);
-//        } catch (IOException e) {
-//            throw new RuntimeException("Failed to read file: " + filePath, e);
-//        }
-//    }
-//    private String processVideoFile(String filePath) {
-//        Path path = Paths.get(UPLOAD_DIR).resolve(filePath).normalize();
-//        try {
-//            long fileSize = Files.size(path);
-//            if (fileSize < 5 * 1024 * 1024) { // If the video is less than 5MB, return base64
-//                byte[] fileBytes = Files.readAllBytes(path);
-//                return Base64.getEncoder().encodeToString(fileBytes);
-//            } else { // For large videos, return URL
-//                return "/videos/" + filePath;
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException("Failed to read video file: " + filePath, e);
-//        }
-//    }
-
 
 }

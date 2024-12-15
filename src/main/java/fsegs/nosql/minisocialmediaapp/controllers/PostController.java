@@ -37,6 +37,17 @@ public class PostController {
     private ResponseEntity<PostResponseDto> addPost(@ModelAttribute PostCreateInput input){
         return new ResponseEntity<>(postService.createPost(input),HttpStatus.CREATED);
     }
+    @PostMapping("/{postId}/like/{userId}")
+    public ResponseEntity<PostResponseDto> addLike(@PathVariable String postId, @PathVariable String userId) {
+        PostResponseDto updatedPost = postService.addLike(userId, postId);
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{postId}/dislike/{userId}")
+    public ResponseEntity<PostResponseDto> deleteLike(@PathVariable String postId, @PathVariable String userId) {
+        PostResponseDto updatedPost = postService.deleteLike(userId, postId);
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+    }
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable String postId,
             @RequestBody PostUpdateInput updateInput) { // Use the new DTO

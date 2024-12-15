@@ -83,26 +83,28 @@ public class PostService {
         return postMapper.toDto(savedPost); // Convert to DTO
     }
     // Add a like to a post
-    public void addLike(String userId, String postId) {
+    public PostResponseDto addLike(String userId, String postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         // Add the userId to the likes list if not already present
         if (!post.getLikes().contains(userId)) {
             post.getLikes().add(userId);
-            postRepository.save(post); // Save the updated post
+            post =postRepository.save(post); // Save the updated post
         }
+        return postMapper.toDto(post);
     }
     // Remove a like from a post
-    public void deleteLike(String userId, String postId) {
+    public PostResponseDto deleteLike(String userId, String postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
         // Remove the userId from the likes list if present
         if (post.getLikes().contains(userId)) {
             post.getLikes().remove(userId);
-            postRepository.save(post); // Save the updated post
+            post =postRepository.save(post); // Save the updated post
         }
+        return postMapper.toDto(post);
     }
 
     // Delete a post
