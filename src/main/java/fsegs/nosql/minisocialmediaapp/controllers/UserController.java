@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5200")
 @RequestMapping("/user")
 public class UserController {
     private final UserService service;
@@ -20,13 +21,13 @@ public class UserController {
         this.service = service;
     }
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllPosts(){
+    public ResponseEntity<List<User>> getAllUsers(){
         return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
     }
-    @GetMapping("/{userId}")
-    public ResponseEntity<User> getPostById(@PathVariable String userId){
-        return new ResponseEntity<>(service.getUserById(userId), HttpStatus.OK);
-    }
+//    @GetMapping("/{userId}")
+//    public ResponseEntity<User> getUserById(@PathVariable String userId){
+//        return new ResponseEntity<>(service.getUserById(userId), HttpStatus.OK);
+//    }
     @PostMapping("/subscribe")
     public ResponseEntity<UserDto> addUser(@RequestBody RegisterRequest request) {
         UserDto user = service.createUser(request);
@@ -37,6 +38,11 @@ public class UserController {
             @RequestBody AuthenticationRequest request
     ) {
         return ResponseEntity.ok(service.authenticate(request));
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id)  {
+        service.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

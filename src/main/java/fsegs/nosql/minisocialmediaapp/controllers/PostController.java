@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:5200")
 @RequestMapping("/post")
 public class PostController {
     private final PostService postService;
@@ -23,7 +23,7 @@ public class PostController {
         return new ResponseEntity<>(postService.getAllPosts(), HttpStatus.OK);
     }
 
-    @GetMapping("/{authorId}")
+    @GetMapping("/author/{authorId}")
     public ResponseEntity<List<PostResponseDto>> getPostsByAuthorId(@PathVariable String authorId){
         return new ResponseEntity<>(postService.getPostsByAuthor(authorId),HttpStatus.OK);
     }
