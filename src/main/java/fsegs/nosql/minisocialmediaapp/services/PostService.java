@@ -42,46 +42,57 @@ public class PostService {
         Post savedPost=postRepository.save(postMapper.toEntity(input));
         return postMapper.toDto(savedPost);
     }
-
     public PostResponseDto updatePost(String postId, PostUpdateInput updateInput) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        // Get existing file paths
-        List<String> existingImagePaths = post.getImagePaths();
-        List<String> existingVideoPaths = post.getVideoPaths();
-
-        // Update content
+        // Update just the content and the timestamp
         post.setContent(updateInput.getContent());
-        post.setUpdatedAt(LocalDateTime.now()); // Update the timestamp
+        post.setUpdatedAt(LocalDateTime.now());
 
-        // Handle image paths
-        if (updateInput.getImagePaths() != null) {
-            // Delete old images that are not in the new list
-            for (String existingPath : existingImagePaths) {
-                if (!updateInput.getImagePaths().contains(existingPath)) {
-                    deleteFile(existingPath); // Implement this method to delete the file
-                }
-            }
-            // Update the image paths
-            post.setImagePaths(updateInput.getImagePaths());
-        }
-
-        // Handle video paths
-        if (updateInput.getVideoPaths() != null) {
-            // Delete old videos that are not in the new list
-            for (String existingPath : existingVideoPaths) {
-                if (!updateInput.getVideoPaths().contains(existingPath)) {
-                    deleteFile(existingPath); // Implement this method to delete the file
-                }
-            }
-            // Update the video paths
-            post.setVideoPaths(updateInput.getVideoPaths());
-        }
-        // Save the updated post
         Post savedPost = postRepository.save(post);
-        return postMapper.toDto(savedPost); // Convert to DTO
+        return postMapper.toDto(savedPost);
     }
+
+//    public PostResponseDto updatePost(String postId, PostUpdateInput updateInput) {
+//        Post post = postRepository.findById(postId)
+//                .orElseThrow(() -> new RuntimeException("Post not found"));
+//
+//        // Get existing file paths
+//        List<String> existingImagePaths = post.getImagePaths();
+//        List<String> existingVideoPaths = post.getVideoPaths();
+//
+//        // Update content
+//        post.setContent(updateInput.getContent());
+//        post.setUpdatedAt(LocalDateTime.now()); // Update the timestamp
+//
+//        // Handle image paths
+//        if (updateInput.getImagePaths() != null) {
+//            // Delete old images that are not in the new list
+//            for (String existingPath : existingImagePaths) {
+//                if (!updateInput.getImagePaths().contains(existingPath)) {
+//                    deleteFile(existingPath); // Implement this method to delete the file
+//                }
+//            }
+//            // Update the image paths
+//            post.setImagePaths(updateInput.getImagePaths());
+//        }
+//
+//        // Handle video paths
+//        if (updateInput.getVideoPaths() != null) {
+//            // Delete old videos that are not in the new list
+//            for (String existingPath : existingVideoPaths) {
+//                if (!updateInput.getVideoPaths().contains(existingPath)) {
+//                    deleteFile(existingPath); // Implement this method to delete the file
+//                }
+//            }
+//            // Update the video paths
+//            post.setVideoPaths(updateInput.getVideoPaths());
+//        }
+//        // Save the updated post
+//        Post savedPost = postRepository.save(post);
+//        return postMapper.toDto(savedPost); // Convert to DTO
+//    }
     // Add a like to a post
     public PostResponseDto addLike(String userId, String postId) {
         Post post = postRepository.findById(postId)
