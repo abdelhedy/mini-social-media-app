@@ -18,4 +18,5 @@ public class RegisterRequest {
     private String password;
     private String phone;
     private LocalDate date_naiss;
+    private String bio;
 }

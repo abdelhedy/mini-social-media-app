@@ -10,6 +10,7 @@ import java.util.List;
 @Document(collection = "users")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 @Setter
 @ToString

@@ -1,14 +1,13 @@
 package fsegs.nosql.minisocialmediaapp.controllers;
 
-import fsegs.nosql.minisocialmediaapp.dtos.responseDtos.PostResponseDto;
+import fsegs.nosql.minisocialmediaapp.dtos.createInputs.AuthenticationRequest;
+import fsegs.nosql.minisocialmediaapp.dtos.createInputs.RegisterRequest;
+import fsegs.nosql.minisocialmediaapp.dtos.responseDtos.UserDto;
 import fsegs.nosql.minisocialmediaapp.models.User;
 import fsegs.nosql.minisocialmediaapp.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +26,17 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<User> getPostById(@PathVariable String userId){
         return new ResponseEntity<>(service.getUserById(userId), HttpStatus.OK);
+    }
+    @PostMapping("/subscribe")
+    public ResponseEntity<UserDto> addUser(@RequestBody RegisterRequest request) {
+        UserDto user = service.createUser(request);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @PostMapping("/authenticate")
+    public ResponseEntity<UserDto> authenticate(
+            @RequestBody AuthenticationRequest request
+    ) {
+        return ResponseEntity.ok(service.authenticate(request));
     }
 
 

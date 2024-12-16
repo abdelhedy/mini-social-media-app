@@ -1,5 +1,8 @@
 package fsegs.nosql.minisocialmediaapp.models;
 
+import lombok.Data;
+
+@Data
 public class Profile {
     private String bio;
     private String profilePicture;

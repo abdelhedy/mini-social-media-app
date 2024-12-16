@@ -10,5 +10,4 @@ import java.util.List;
 public interface PostRepository extends MongoRepository<Post,String> {
     // Get all posts by a specific user
     List<Post> findByAuthorId(String authorId);
-
 }
